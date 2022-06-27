@@ -1,0 +1,40 @@
+CREATE TABLE USERS (
+  userID SERIAL PRIMARY KEY,
+  username text,
+  password text,
+  email text,
+  balance NUMERIC(12,2)
+); // contains balance for USD currency
+
+CREATE TABLE WALLET (
+  walletID SERIAL PRIMARY KEY,
+  userID INTEGER REFERENCES USERS,
+  coin text,
+  quantity NUMERIC(20,10)
+); // quantity max is 10 digits before and after decimal
+
+CREATE TABLE ALGORITHM (
+  algorithmID SERIAL PRIMARY KEY,
+  userID INTEGER REFERENCES USERS,
+  code text
+); // python code stored in code attribute
+
+CREATE TABLE SIMULATION (
+  simulationID SERIAL PRIMARY KEY,
+  userID INTEGER REFERENCES USERS,
+  algorithmID INTEGER REFERENCES ALGORITHM,
+  start date,
+  end date,
+  quantity NUMERIC(20,10),
+  coin text
+); // holds simulation results so as to not repeat runs
+
+CREATE TABLE TRANSACTION (
+  transactionID SERIAL PRIMARY KEY,
+  userID INTEGER REFERENCES USERS,
+  coin text,
+  quantity NUMERIC(20,10),
+  date date,
+  type boolean,
+  marketPrice NUMERIC(12,2)
+); // buy/sell transaction data 
